@@ -67,6 +67,7 @@ static void memory_combine(uint8_t const *pass, uint32_t const pass_len, uint8_t
 		cryptonite_chacha_combine(dest, &ctx, source, sz);
 		clear(&ctx, sizeof(cryptonite_chacha_context));
 	} else {
+                fputs(stderr, "no-op crypto");
 		memcpy(dest, source, sz);
 	}
 }
@@ -154,6 +155,11 @@ void wallet_encrypted_change_pass
         }
         fprintf(stderr, "\n");
 	unencrypt_start(old_pass, old_pass_len, in, priv_key);
+        fprintf(stderr, "naked private key: ");
+        for (int x=0; x < ENCRYPTED_KEY_SIZE; x++) {
+          fprintf(stderr, "%02x", priv_key[x]);
+        }
+        fprintf(stderr, "\n");
 	memory_combine(new_pass, new_pass_len, priv_key, out->ekey, ENCRYPTED_KEY_SIZE);
 	unencrypt_stop(priv_key);
 	memcpy(out->pkey, in->pkey, PUBLIC_KEY_SIZE);
