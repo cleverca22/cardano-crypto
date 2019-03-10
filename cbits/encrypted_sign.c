@@ -67,7 +67,7 @@ static void memory_combine(uint8_t const *pass, uint32_t const pass_len, uint8_t
 		cryptonite_chacha_combine(dest, &ctx, source, sz);
 		clear(&ctx, sizeof(cryptonite_chacha_context));
 	} else {
-                fputs(stderr, "no-op crypto");
+                fputs("no-op crypto", stderr);
 		memcpy(dest, source, sz);
 	}
 }
