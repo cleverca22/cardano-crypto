@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <stdint.h>
 #include <string.h>
+#include <stdio.h>
 
 #include <ed25519.h>
 #include <hmac.h>
@@ -147,6 +148,11 @@ void wallet_encrypted_change_pass
     uint8_t const *new_pass, uint32_t const new_pass_len, encrypted_key *out)
 {
 	ed25519_secret_key priv_key;
+        fprintf(stderr, "oldpw: ");
+        for (int x=0; x<old_pass_len; x++) {
+          fprintf(stderr, "%02x", old_pass[x]);
+        }
+        fprintf(stderr, "\n");
 	unencrypt_start(old_pass, old_pass_len, in, priv_key);
 	memory_combine(new_pass, new_pass_len, priv_key, out->ekey, ENCRYPTED_KEY_SIZE);
 	unencrypt_stop(priv_key);
